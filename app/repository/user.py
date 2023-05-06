@@ -27,9 +27,9 @@ Base.metadata.create_all(engine)
 
 
 
-def create_user(username: str, email: str, profileurl: str, profileslug: str, password: str) -> bool:
+def create_user(username: str, email: str, profileslug: str, password: str) -> bool:
     try:
-        user = User(userName=username, email=email, profileUrl=profileurl, profileSlug=profileslug, password=password)
+        user = User(userName=username, email=email, profileUrl=profileslug, profileSlug=profileslug, password=password)
         session = Session()
         session.add(user)
         session.commit()

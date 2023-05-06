@@ -12,7 +12,7 @@ Redis = get_redis_handler()
 
 @router.post("/register")
 def register(body: RegisterSchema):
-    resp = create_user(body.username, body.email, body.profileurl, body.profileslug, body.password)
+    resp = create_user(body.username, body.email, body.profileslug, body.password)
     if resp:
         return "ok"
     return "nok"

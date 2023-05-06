@@ -11,7 +11,6 @@ class UrlToBeDeleted(BaseModel):
 class RegisterSchema(BaseModel):
     username: str
     email: str
-    profileurl: str
     profileslug: str
     password: str
 
