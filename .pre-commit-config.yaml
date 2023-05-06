@@ -1,0 +1,9 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+exclude: (^VERSION)
+repos:
+  - repo: https://github.com/psf/black # auto-apply black
+    rev: 22.6.0
+    hooks:
+      - id: black
+        language_version: python3 # Should be a command that runs python3.6+

@@ -1,0 +1,62 @@
+
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-from-docker
+{
+	"name": "Docker from Docker",
+	"context": "..",
+	"dockerFile": "../.docker/Dockerfile",
+	// "forwardPorts": [8000],
+
+	"runArgs": ["--network=host", "--rm"],
+	// "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind" ],
+	// "overrideCommand": false,
+
+	// Use this environment variable if you need to bind mount your local source code into a new container.
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.pylint",
+				"Gruntfuggly.todo-tree",
+				"rangav.vscode-thunder-client",
+				"njpwerner.autodocstring",
+				"adpyke.codesnap"
+			]
+		}
+	},
+"build": {
+        "args": {
+            // "network": "host",
+			"BUILDKIT_INLINE_CACHE": "0"
+        }
+    }
+
+	// Configure tool-specific properties.
+	// "customizations": {
+	// 	// Configure properties specific to VS Code.
+	// 	"vscode": {
+	// 		// Add the IDs of extensions you want installed when the container is created.
+	// 		"extensions": [
+	// 			"ms-azuretools.vscode-docker"
+	// 		]
+	// 	}
+	// },
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	//"postCreateCommand": "watchmedo auto-restart -- celery --app=app.utils.worker.celery worker --concurrency=1"
+	//"postCreateCommand": "celery --app=app.utils.worker.celery worker --concurrency=1"
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	// "remoteUser": "vscode",
+	// "runArgs": [ "--network=host"]
+    // "build": {
+    //     "args": {
+    //         "network": "host"
+    //     }
+    // }
+}
