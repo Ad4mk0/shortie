@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class UrlToBeShorted(BaseModel):
@@ -18,3 +19,8 @@ class RegisterSchema(BaseModel):
 class LoginSchema(BaseModel):
     username: str
     password: str
+
+
+class UserUpdateBody(BaseModel):
+    username: Optional[str]
+    email: Optional[str]

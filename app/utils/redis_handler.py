@@ -124,7 +124,7 @@ class RedisHandler:
         Returns:
             str: returns str value if found, else None
         """
-        return self.redis_put_nt(key+"%"+slug, value)
+        return self.put_nt(key+"%"+slug, value)
 
 
     def get_slug(self, key: str, slug: str) -> str | None:
@@ -139,6 +139,22 @@ class RedisHandler:
         """
         val = self.client.get(key+"%"+slug)
         return val
+    
+
+    def get_slug_only(self, slug: str):
+        keys = self.all_keys("%"+slug)
+        all = [{"hash": key,
+                "link": self.get(key)} for key in keys ]
+        return all
+
+    def remove_slug_only(self, slug: str) -> bool:
+        try:
+            keys = self.all_keys("%"+slug)
+            for key in keys:
+                self.client.delete(key)
+            return True
+        except Exception:
+            return False
 
 
     def remove(self, keys: List[str] | str, token: str):
@@ -169,7 +185,7 @@ class RedisHandler:
             Optional[bool]: returns True when succeeds
         """
         self.redis_remove(key, token)
-        return self.redis_put_nt(key, value)
+        return self.put_nt(key, value)
 
 
 

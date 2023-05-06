@@ -40,10 +40,13 @@ def create_user(username: str, email: str, profileurl: str, profileslug: str, pa
 
 
 def get_user_by_slug(slug: str):
-    session = Session()
-    user = session.query(User).filter_by(profileSlug=slug).first()
-    session.close()
-    return UserOut.from_orm(user)
+    try:
+        session = Session()
+        user = session.query(User).filter_by(profileSlug=slug).first()
+        session.close()
+        return UserOut.from_orm(user)
+    except Exception:
+        return False
 
 
 def get_user_by_name_password(username: str, password: str):
@@ -51,6 +54,53 @@ def get_user_by_name_password(username: str, password: str):
     user = session.query(User).filter_by(userName=username, password=password).first()
     session.close()
     return UserOut.from_orm(user).profileSlug
+
+
+
+
+
+def user_delete_by_slug(slug: str):
+    session = Session()
+    user = session.query(User).filter_by(profileSlug=slug).first()
+    if user:
+        session.delete(user)
+        session.commit()
+        session.close()
+        print(f"User with id {slug} deleted successfully!")
+        return True
+    else:
+        print(f"User with id {slug} not found.")
+        session.close()
+        return False
+
+
+
+
+
+
+
+def user_update_name_email(slug: str, name=None, email=None) -> bool:
+    session = Session()
+    user = session.query(User).filter_by(profileSlug=slug).first()
+    if user:
+        if name:
+            user.name = name
+        if email:
+            user.email = email
+        session.commit()
+        session.close()
+        print(f"User with id {slug} updated successfully!")
+        return True
+
+    else:
+        print(f"User with id {slug} not found.")
+        session.close()
+        return False
+    
+
+
+
+
 
 
 
