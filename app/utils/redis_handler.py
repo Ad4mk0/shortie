@@ -144,6 +144,7 @@ class RedisHandler:
     def get_slug_only(self, slug: str):
         keys = self.all_keys("%"+slug)
         all = [{"hash": key,
+                "surl": "http://localhost:7000/s/"+key.decode("utf-8"),
                 "link": self.get(key)} for key in keys ]
         return all
 
