@@ -31,12 +31,12 @@ def login(body: LoginSchema):
 
 
 @router.get("/p/{slug}")
-def profile_infos(profile_slug: str):
-    user = get_user_by_slug(profile_slug)
+def profile_infos(slug: str):
+    user = get_user_by_slug(slug)
     if user == False:
         return HTTPException(status_code=404, detail="User not found")
 
-    shorted = Redis.get_slug_only(profile_slug)
+    shorted = Redis.get_slug_only(slug)
 
     return {
         "profile": {
