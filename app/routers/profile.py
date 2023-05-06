@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import RedirectResponse 
 from app.utils.redis_handler import get_redis_handler
 from app.schemas.requests import RegisterSchema, LoginSchema, UrlToBeShorted
+from app.repository.user import create_user, get_user_by_name_password
 
 router = APIRouter(prefix="/profile", tags=["profile"])
 
@@ -11,13 +12,21 @@ Redis = get_redis_handler()
 
 @router.post("/register")
 def register(body: RegisterSchema):
-    #TODO: do some freaky shit here
-    return "ok"
+    resp = create_user(body.username, body.email, body.profileurl, body.profileslug, body.password)
+    if resp:
+        return "ok"
+    return "nok"
 
 
 @router.post("/login")
 def login(body: LoginSchema):
-    return "logged ok"
+    try:
+        slug = get_user_by_name_password(body.username, body.password)
+        if slug:
+            return {"slug": slug}
+        return HTTPException(status_code=404, detail="Acess denied") 
+    except Exception:
+        return HTTPException(status_code=404, detail="Acess denied")
 
 
 

@@ -10,8 +10,9 @@ class UrlToBeDeleted(BaseModel):
 class RegisterSchema(BaseModel):
     username: str
     email: str
-    profileSlug: str
-
+    profileurl: str
+    profileslug: str
+    password: str
 
 
 class LoginSchema(BaseModel):

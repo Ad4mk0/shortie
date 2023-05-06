@@ -107,7 +107,8 @@ class RedisHandler:
         """
         if check_rights(token):
             keys = self.all_keys(token, pattern)
-            all = [ {key: self.get(key)} for key in keys ]
+            all = [{"hash": key,
+                    "link": self.get(key)} for key in keys ]
             return all
         raise NoAccess
 

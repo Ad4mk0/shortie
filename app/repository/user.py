@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy.orm import sessionmaker, declarative_base
+# from schematic import UserOut
 # Create a connection to the Postgres database
-engine = create_engine('postgresql://username:password@host:port/database')
+
+engine = create_engine('postgresql://postgres:postgres@0.0.0.0:5432/')
 
 # Create a session factory
 Session = sessionmaker(bind=engine)
@@ -17,31 +17,60 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     userName = Column(String)
-    email = Column(String, unique=True)
-    profileUrl = 
-    profileSlug
-    password
-
-
-    op.create_table('User',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('userName', sa.String(), nullable=True),
-    sa.Column('email', sa.String(), nullable=True),
-    sa.Column('profileUrl', sa.String(), nullable=True),
-    sa.Column('profileSlug', sa.String(), nullable=True),
-    sa.Column('password', sa.String(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    email = Column(String)
+    profileUrl = Column(String, unique=True)
+    profileSlug = Column(String, unique=True)
+    password = Column(String)
 
 # Create the users table in the database
 Base.metadata.create_all(engine)
 
-# Create a new User record
-user = User(name='John Doe', email='john.doe@example.com')
 
-# Add the User record to the database
-session = Session()
-session.add(user)
-session.commit()
 
-# Close the session
-session.close()
+def create_user(username: str, email: str, profileurl: str, profileslug: str, password: str) -> bool:
+    try:
+        user = User(userName=username, email=email, profileUrl=profileurl, profileSlug=profileslug, password=password)
+        session = Session()
+        session.add(user)
+        session.commit()
+        session.close()
+        return True
+    except Exception:
+        return False
+
+
+def get_user_by_slug(slug: str):
+    session = Session()
+    user = session.query(User).filter_by(profileSlug=slug).first()
+    session.close()
+    return UserOut.from_orm(user)
+
+
+def get_user_by_name_password(username: str, password: str):
+    session = Session()
+    user = session.query(User).filter_by(userName=username, password=password).first()
+    session.close()
+    return UserOut.from_orm(user).profileSlug
+
+
+
+
+
+
+###
+
+
+
+from pydantic import BaseModel
+
+# Define a Pydantic data model for a User
+class UserOut(BaseModel):
+    id: int
+    userName: str
+    email: str
+    profileUrl: str
+    profileSlug: str
+    password: str
+    class Config:
+        orm_mode = True
+
