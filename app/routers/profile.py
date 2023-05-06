@@ -48,7 +48,7 @@ def profile_infos(profile_slug: str):
     }
 
 
-@router.post("/{slug}", status_code=200)
+@router.post("/add/{slug}", status_code=200)
 def add_link_to_be_shorted_to_profile(slug: str, param: UrlToBeShorted):
     "Adds link and shorts it to profile"
     user = get_user_by_slug(slug)
